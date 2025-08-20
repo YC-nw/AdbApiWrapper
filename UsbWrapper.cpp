@@ -1,8 +1,8 @@
 #include "BasicMethods.h"
 
 using namespace System;
-namespace AsrClientWrapper{
-	public ref class AsrNativeAdbDevice
+namespace AsrClientWrapper {
+	public ref class AsrNativeAdbDevice : IDisposable
 	{
 	private:
 		unsigned long _timeout = 5000;
@@ -21,6 +21,9 @@ namespace AsrClientWrapper{
 
 			if (nativeHandles == nullptr) {
 				throw gcnew InvalidOperationException("Open usb handles failed");
+			}
+			else if (nativeHandles == (Handles*)-1) {
+				throw gcnew TimeoutException("Open usb handles timeout");
 			}
 
 			AsrNativeAdbDevice^ d = gcnew AsrNativeAdbDevice(nativeHandles);

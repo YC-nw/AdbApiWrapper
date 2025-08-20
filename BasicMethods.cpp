@@ -120,7 +120,7 @@ Handles* find_and_open_handles(unsigned long timeout_ms)
 		{
 			std::cout << "timeout reached" << std::endl;
 			delete[] buf;
-			return nullptr;
+			return (Handles*)-1;
 		}
 		Sleep(10);
 	}
