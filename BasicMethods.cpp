@@ -35,7 +35,7 @@ unsigned long usb_read(ADBAPIHANDLE read_endpoint, void* input, int size, unsign
 {
 	char* ptr = (char*)input;//强制转换输入的类型为char*
 	int remaining = size;//剩余100%
-	while (remaining > 0)
+	while (remaining >= 0)
 	{
 		unsigned long chunk = (remaining > 0x100000) ? 0x100000 : remaining;//计算每次读取的块的大小
 		unsigned long read = 0;//每次循环前清零上次循环的读取的字节数
@@ -49,13 +49,13 @@ unsigned long usb_read(ADBAPIHANDLE read_endpoint, void* input, int size, unsign
 			timeout//600秒超时
 		);
 
-		if (!success || read == 0) //错误读取
+		if (!success) //错误读取
 		{
 			DWORD err = GetLastError();
 			printf("Read error: 0x%08lX\n", err);
 			return 0;
 		}
-
+		if (!read) return 0;
 		ptr = ptr + read;//已经读取的字节数
 		remaining = remaining - read;//计算剩余
 	}
