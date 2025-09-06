@@ -101,7 +101,6 @@ Handles* find_and_open_handles(unsigned long timeout_ms)
 	{
 		if (AdbNextInterface(AdbEnumInterfaces(usb_class_id, true, true, true), (AdbInterfaceInfo*)buf, &size))
 		{
-			cout << "an adb device has found" << endl;
 			wchar_t* device_path = reinterpret_cast<wchar_t*>(buf + 280);
 			char out[35] = { 0 };
 			WideCharToMultiByte(CP_UTF8, 0, device_path, -1, out, 33, NULL, NULL);
